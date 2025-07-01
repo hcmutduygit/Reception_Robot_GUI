@@ -1,0 +1,30 @@
+<RCC>
+  <qresource prefix="Icons">
+    <file>Check_icon.png</file>
+    <file>Orders_icon_off.png</file>
+    <file>menu.svg</file>
+    <file>Orders_icon_on.png</file>
+    <file>Refresh_icon.png</file>
+    <file>Uncheck_icon.png</file>
+  </qresource>
+  <qresource prefix="Images">
+    <file>ruler.jpeg</file>
+    <file>pencil.jpeg</file>
+    <file>pen.jpeg</file>
+    <file>mi.jpg</file>
+    <file>eraser.jpeg</file>
+    <file>com</file>
+    <file>cafe.jpg</file>
+    <file>bun .jpg</file>
+    <file>marker_indoor.png</file>
+    <file>marker3.png</file>
+    <file>marker2.png</file>
+    <file>marker.png</file>
+  </qresource>
+  <qresource prefix="logos">
+    <file>Fablab Logo-aftercut.png</file>
+    <file>LogoViam.png</file>
+    <file>Logo BK.png</file>
+    <file>icon_APP.png</file>
+  </qresource>
+</RCC>

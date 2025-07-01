@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>logo/Logo BK.png</file>
+        <file>logo/LogoViam.png</file>
+        <file>qml/map.qml</file>
+        <file>maps/bachkhoa.osm.pdf</file>
+        <file>images/markers/marker3.png</file>
+        <file>images/markers/marker2.png</file>
+        <file>images/markers/marker.png</file>
+        <file>logo/icon_APP.png</file>
+        <file>Roboto/Roboto-Black.ttf</file>
+        <file>Roboto/Roboto-BlackItalic.ttf</file>
+        <file>Roboto/Roboto-Bold.ttf</file>
+        <file>Roboto/Roboto-BoldItalic.ttf</file>
+        <file>Roboto/Roboto-Italic.ttf</file>
+        <file>Roboto/Roboto-Light.ttf</file>
+        <file>Roboto/Roboto-LightItalic.ttf</file>
+        <file>Roboto/Roboto-Medium.ttf</file>
+        <file>Roboto/Roboto-MediumItalic.ttf</file>
+        <file>Roboto/Roboto-Regular.ttf</file>
+        <file>Roboto/Roboto-Thin.ttf</file>
+        <file>Roboto/Roboto-ThinItalic.ttf</file>
+        <file>icon/Orders_icon_off.png</file>
+        <file>icon/Orders_icon_on.png</file>
+        <file>icon/Refresh_icon.png</file>
+        <file>icon/Uncheck_icon.png</file>
+        <file>icon/Check_icon.png</file>
+        <file>maps/Map_indoor.png</file>
+        <file>csv/log_Th 7 thg 5 14 16 08 48 2022(Cantin-C1).csv</file>
+        <file>csv/log_test_C1newroom_09052022(IN).csv</file>
+        <file>csv/log_test_C1newroom_09052022.csv</file>
+        <file>images/eraser.jpeg</file>
+        <file>images/pen.jpeg</file>
+        <file>images/pencil.jpeg</file>
+        <file>images/ruler.jpeg</file>
+        <file>images/bun .jpg</file>
+        <file>images/cafe.jpg</file>
+        <file>images/com</file>
+        <file>images/mi.jpg</file>
+        <file>images/markers/marker_indoor.png</file>
+        <file>qml/Marker_indoor.qml</file>
+        <file>qml/Marker_outdoor.qml</file>
+    </qresource>
+</RCC>
