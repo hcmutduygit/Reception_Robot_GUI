@@ -6,7 +6,7 @@ from PySide6 import QtCore
 from PySide6.QtGui import QImage, QPixmap
 
 from robot_ui import Ui_MainWindow
-
+# Hello world
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
