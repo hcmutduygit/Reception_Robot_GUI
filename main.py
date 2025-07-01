@@ -1,12 +1,13 @@
-import sys, pickle, socket, struct, cv2
+import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import Qt, QThread
-from PySide6 import QtCore
-from PySide6.QtGui import QImage, QPixmap
+from PySide6.QtGui import QPixmap
 
 from robot_ui import Ui_MainWindow
 # Hello world
+from camera_client import SocketReceiver
+from camera_server import CameraServer   
+
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -25,6 +26,7 @@ class MainWindow(QMainWindow):
         "verify": "fablab"
     }
 ]
+        self.camera_server = None
 
         # set moi vô thi hien cai nao 
         self.ui.Page.setCurrentWidget(self.ui.Page_signin)
@@ -136,11 +138,15 @@ class MainWindow(QMainWindow):
 
 
     def start_camera(self):
+        self.stop_camera()
+        if not self.camera_server:
+            self.camera_server = CameraServer()
+            self.camera_server.start()
         # khoi tao camera dua tren class SocketReceiver
-        if not self.camera_thread:
-            self.camera_thread = SocketReceiver(self.ui.camera_label)
-            self.camera_thread.ImageUpdate.connect(self.update_camera_frame)
-            self.camera_thread.start()
+        # if not self.camera_thread:
+        self.camera_thread = SocketReceiver(self.ui.camera_label)
+        self.camera_thread.ImageUpdate.connect(self.update_camera_frame)
+        self.camera_thread.start()
 
     def stop_camera(self):
         # xoa camera de lan sau gan lai va start lai 
@@ -156,56 +162,6 @@ class MainWindow(QMainWindow):
         self.stop_camera()
         event.accept()  
 
-
-
-class SocketReceiver(QThread):
-    ImageUpdate = QtCore.Signal(QImage)
-
-    def __init__(self, target_label):
-        super().__init__()
-        self._active = True             # bien self._active là cờ báo chạy hay k  
-        self.target_label = target_label    # gan cai khung hinh vo 
-
-    def run(self):
-        # tao socket nhan frame 
-        server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server_socket.bind(('0.0.0.0', 9999)) # nhan toan bo ip ket noi den  
-        server_socket.listen(1) 
-        conn, addr = server_socket.accept() # chap nhan ket noi 
-        conn_file = conn.makefile('rb') # makefile rb de cho phep doc 
-
-        # vong lap nhan va giai ma frame 
-        while self._active:
-            packed_msg_size = conn_file.read(4) # doc size 
-            if not packed_msg_size:
-                break
-            msg_size = struct.unpack(">L", packed_msg_size)[0]  # giai ma size 
-
-            data = b""
-            while len(data) < msg_size:
-                data += conn_file.read(msg_size - len(data)) # doc frame 
-
-            frame = pickle.loads(data) # chuyen frame tu byte sang frame 
-            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            h, w, ch = rgb.shape
-            img = QImage(rgb.data, w, h, ch * w, QImage.Format_RGB888)
-
-            # scale lai 
-            label_width = self.target_label.width()
-            label_height = self.target_label.height()
-            scaled = img.scaled(label_width, label_height, Qt.KeepAspectRatio)
-
-            self.ImageUpdate.emit(scaled)   # gui anh 
-            
-        conn_file.close()   # thoat khoi vong lap khi thread dung 
-        conn.close()
-        server_socket.close()
-
-
-    def stop(self):
-        self._active = False
-        self.quit()
-        self.wait()
 
 
 if __name__ == "__main__":
