@@ -1,12 +1,12 @@
-import sys
+import sys, rclpy
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QPixmap
 
 from robot_ui import Ui_MainWindow
 # Hello world
-from camera_client import SocketReceiver
-from camera_server import CameraServer   
+from jetson.camera_publisher import CameraPublisherThread
+from camera_subcriber import CameraSubscriberThread
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -26,7 +26,9 @@ class MainWindow(QMainWindow):
         "verify": "fablab"
     }
 ]
-        self.camera_server = None
+        # khoi tao camera
+        self.camera_pub_thread = None
+        self.camera_sub_thread = None
 
         # set moi vô thi hien cai nao 
         self.ui.Page.setCurrentWidget(self.ui.Page_signin)
@@ -35,7 +37,6 @@ class MainWindow(QMainWindow):
         # click sang tab khac thi chuyen trang 
         self.ui.Signin_btn_signup.clicked.connect(lambda: self.ui.Page.setCurrentWidget(self.ui.Page_signup))
         self.ui.Signin_btn_signin.clicked.connect(lambda: self.ui.Page.setCurrentWidget(self.ui.Page_signin))
-
         self.ui.Signin_btn_login.clicked.connect(self.handle_login)
         self.ui.Signup_btn_signup.clicked.connect(self.handle_signup)
 
@@ -44,8 +45,6 @@ class MainWindow(QMainWindow):
         self.ui.Main_btn_tracking.clicked.connect(lambda: self.switch_to_page(self.ui.Page_tracking))
         self.ui.Account__btnlogout.clicked.connect(self.handle_logout)
 
-        # khoi tao camera
-        self.camera_thread = None
 
 
     def handle_login(self):
@@ -138,21 +137,20 @@ class MainWindow(QMainWindow):
 
 
     def start_camera(self):
-        self.stop_camera()
-        if not self.camera_server:
-            self.camera_server = CameraServer()
-            self.camera_server.start()
-        # khoi tao camera dua tren class SocketReceiver
-        # if not self.camera_thread:
-        self.camera_thread = SocketReceiver(self.ui.camera_label)
-        self.camera_thread.ImageUpdate.connect(self.update_camera_frame)
-        self.camera_thread.start()
+        self.camera_pub_thread = CameraPublisherThread()
+        self.camera_pub_thread.start()
+
+        self.camera_sub_thread = CameraSubscriberThread(self.ui.camera_label)
+        self.camera_sub_thread.ImageUpdate.connect(self.update_camera_frame)
+        self.camera_sub_thread.start()
 
     def stop_camera(self):
-        # xoa camera de lan sau gan lai va start lai 
-        if self.camera_thread:
-            self.camera_thread.stop()
-            self.camera_thread = None
+        if self.camera_pub_thread:
+            self.camera_pub_thread.stop()
+            self.camera_pub_thread = None
+        if self.camera_sub_thread:
+            self.camera_sub_thread.stop()
+            self.camera_sub_thread = None
 
     def update_camera_frame(self, image):
         # hien thi len QLabel trong ui 
@@ -160,11 +158,13 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         self.stop_camera()
+        rclpy.shutdown()
         event.accept()  
 
 
 
 if __name__ == "__main__":
+    rclpy.init()
     app = QApplication(sys.argv)
     widget = MainWindow()
     widget.show()
