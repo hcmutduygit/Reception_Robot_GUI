@@ -102,7 +102,6 @@ class MainWindow(QMainWindow):
         msg.setText("Are you sure you want to log out?")
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msg.setIcon(QMessageBox.Question)
-
         
         # van chua canh giua duoc, chi dam bao no nam trong frame 
         msg.adjustSize()
@@ -115,15 +114,16 @@ class MainWindow(QMainWindow):
         reply = msg.exec()
 
         if reply == QMessageBox.Yes:
+            self.stop_camera()
             self.ui.Page.setCurrentWidget(self.ui.Page_signin)
             self.ui.Dashboard.setCurrentWidget(self.ui.Dashboard_signin)
-        
+
     
     def switch_to_page(self, page_widget):
         self.ui.Page.setCurrentWidget(page_widget)
 
         # dung cac process dang chay 
-        self.stop_camera()
+        # self.stop_camera()
 
         # Bật process phù hợp
         page_handlers = {
@@ -137,12 +137,14 @@ class MainWindow(QMainWindow):
 
 
     def start_camera(self):
-        self.camera_pub_thread = CameraPublisherThread()
-        self.camera_pub_thread.start()
+        if not hasattr(self, "camera_pub_thread") or self.camera_pub_thread is None:
+            self.camera_pub_thread = CameraPublisherThread()
+            self.camera_pub_thread.start()
 
-        self.camera_sub_thread = CameraSubscriberThread(self.ui.camera_label)
-        self.camera_sub_thread.ImageUpdate.connect(self.update_camera_frame)
-        self.camera_sub_thread.start()
+        if not hasattr(self, "camera_sub_thread") or self.camera_sub_thread is None:
+            self.camera_sub_thread = CameraSubscriberThread(self.ui.camera_label)
+            self.camera_sub_thread.ImageUpdate.connect(self.update_camera_frame)
+            self.camera_sub_thread.start()
 
     def stop_camera(self):
         if self.camera_pub_thread:
@@ -153,8 +155,8 @@ class MainWindow(QMainWindow):
             self.camera_sub_thread = None
 
     def update_camera_frame(self, image):
-        # hien thi len QLabel trong ui 
-        self.ui.camera_label.setPixmap(QPixmap.fromImage(image))
+        if self.ui.Page.currentWidget() == self.ui.Page_Camera:
+            self.ui.camera_label.setPixmap(QPixmap.fromImage(image))
 
     def closeEvent(self, event):
         self.stop_camera()
