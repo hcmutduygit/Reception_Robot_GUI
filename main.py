@@ -4,9 +4,11 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QPixmap
 
 from robot_ui import Ui_MainWindow
-# Hello world
+# pyside6-uic Robot_UI.ui -o robot_ui.py
+
 from jetson.camera_publisher import CameraPublisherThread
 from camera_subcriber import CameraSubscriberThread
+from attendance import AttendanceTab
 
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
@@ -30,6 +32,10 @@ class MainWindow(QMainWindow):
         self.camera_pub_thread = None
         self.camera_sub_thread = None
 
+        # khoi tao tab diem danh
+
+        self.attendance_tab = AttendanceTab(self.ui)
+
         # set moi vô thi hien cai nao 
         self.ui.Page.setCurrentWidget(self.ui.Page_signin)
         self.ui.Dashboard.setCurrentWidget(self.ui.Dashboard_signin)   
@@ -43,9 +49,8 @@ class MainWindow(QMainWindow):
         # click sang tab khac thi chuyen trang 
         self.ui.Main_btn_camera.clicked.connect(lambda: self.switch_to_page(self.ui.Page_Camera))
         self.ui.Main_btn_tracking.clicked.connect(lambda: self.switch_to_page(self.ui.Page_tracking))
+        self.ui.Main_btn_attendance.clicked.connect(lambda: self.switch_to_page(self.ui.Page_attendance))
         self.ui.Account__btnlogout.clicked.connect(self.handle_logout)
-
-
 
     def handle_login(self):
         username = self.ui.Signin_username.text()
@@ -53,7 +58,7 @@ class MainWindow(QMainWindow):
 
         for user in self.registered_users:
             if user["username"] == username and user["password"] == password:
-                self.switch_to_page(self.ui.Page_Camera)  # sang giao diện chính
+                self.switch_to_page(self.ui.Page_attendance)  # sang giao diện chính
                 self.ui.Dashboard.setCurrentWidget(self.ui.Dashboard_main)
                 return
         else:

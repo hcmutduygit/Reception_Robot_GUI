@@ -10,7 +10,6 @@ class CameraPublisherThread(QThread):
         super().__init__()
         self._active = True
 
-
     def run(self):
         node = rclpy.create_node('camera_publisher')
         executor = SingleThreadedExecutor()

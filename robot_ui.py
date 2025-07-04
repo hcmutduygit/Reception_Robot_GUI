@@ -15,10 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFormLayout, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QLayout, QLineEdit,
-    QMainWindow, QPushButton, QSizePolicy, QStackedWidget,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QFormLayout, QFrame,
+    QGridLayout, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QLineEdit, QMainWindow, QPushButton,
+    QSizePolicy, QSpacerItem, QStackedWidget, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 from resources import resources_rc
 from resources import icon_rc
 
@@ -360,7 +361,7 @@ class Ui_MainWindow(object):
 
         self.Main__frame_admin = QFrame(self.Main_btn)
         self.Main__frame_admin.setObjectName(u"Main__frame_admin")
-        self.Main__frame_admin.setMaximumSize(QSize(260, 220))
+        self.Main__frame_admin.setMaximumSize(QSize(260, 300))
         self.Main__frame_admin.setFrameShape(QFrame.NoFrame)
         self.Main__frame_admin.setFrameShadow(QFrame.Raised)
         self.verticalLayout_8 = QVBoxLayout(self.Main__frame_admin)
@@ -383,12 +384,21 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.Label_admin)
 
-        self.Main_btn_camera = QPushButton(self.Main__frame_admin)
-        self.Main_btn_camera.setObjectName(u"Main_btn_camera")
-        self.Main_btn_camera.setMinimumSize(QSize(0, 40))
+        self.Main_btn_attendance = QPushButton(self.Main__frame_admin)
+        self.Main_btn_attendance.setObjectName(u"Main_btn_attendance")
+        self.Main_btn_attendance.setMinimumSize(QSize(0, 40))
         font4 = QFont()
         font4.setFamilies([u"Roboto"])
         font4.setPointSize(18)
+        self.Main_btn_attendance.setFont(font4)
+        self.Main_btn_attendance.setFocusPolicy(Qt.NoFocus)
+        self.Main_btn_attendance.setFlat(True)
+
+        self.verticalLayout_8.addWidget(self.Main_btn_attendance)
+
+        self.Main_btn_camera = QPushButton(self.Main__frame_admin)
+        self.Main_btn_camera.setObjectName(u"Main_btn_camera")
+        self.Main_btn_camera.setMinimumSize(QSize(0, 40))
         self.Main_btn_camera.setFont(font4)
         self.Main_btn_camera.setFocusPolicy(Qt.NoFocus)
         self.Main_btn_camera.setFlat(True)
@@ -804,16 +814,16 @@ class Ui_MainWindow(object):
 "}")
         self.gridLayout_6 = QGridLayout(self.Page_tracking)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.Menu_tracking = QFrame(self.Page_tracking)
-        self.Menu_tracking.setObjectName(u"Menu_tracking")
-        self.Menu_tracking.setMinimumSize(QSize(0, 120))
-        self.Menu_tracking.setMaximumSize(QSize(16777215, 120))
-        self.Menu_tracking.setStyleSheet(u"")
-        self.Menu_tracking.setFrameShape(QFrame.NoFrame)
-        self.Menu_tracking.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_3 = QHBoxLayout(self.Menu_tracking)
+        self.menu_tracking = QFrame(self.Page_tracking)
+        self.menu_tracking.setObjectName(u"menu_tracking")
+        self.menu_tracking.setMinimumSize(QSize(0, 120))
+        self.menu_tracking.setMaximumSize(QSize(16777215, 120))
+        self.menu_tracking.setStyleSheet(u"")
+        self.menu_tracking.setFrameShape(QFrame.NoFrame)
+        self.menu_tracking.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_3 = QHBoxLayout(self.menu_tracking)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_26 = QLabel(self.Menu_tracking)
+        self.label_26 = QLabel(self.menu_tracking)
         self.label_26.setObjectName(u"label_26")
         self.label_26.setMinimumSize(QSize(0, 70))
         self.label_26.setMaximumSize(QSize(16777215, 70))
@@ -836,7 +846,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.label_26)
 
 
-        self.gridLayout_6.addWidget(self.Menu_tracking, 0, 0, 1, 1)
+        self.gridLayout_6.addWidget(self.menu_tracking, 0, 0, 1, 1)
 
         self.tracking = QVBoxLayout()
         self.tracking.setObjectName(u"tracking")
@@ -850,13 +860,277 @@ class Ui_MainWindow(object):
         self.gridLayout_6.addLayout(self.tracking, 1, 0, 1, 1)
 
         self.Page.addWidget(self.Page_tracking)
-        self.Page_plotData = QWidget()
-        self.Page_plotData.setObjectName(u"Page_plotData")
-        self.horizontalLayout_6 = QHBoxLayout(self.Page_plotData)
+        self.Page_attendance = QWidget()
+        self.Page_attendance.setObjectName(u"Page_attendance")
+        self.Page_attendance.setStyleSheet(u"*{\n"
+"background-color: rgb(240, 246, 255);\n"
+"}\n"
+"#info_frame QLineEdit,\n"
+"#info_frame QComboBox {\n"
+"	padding: 4px 5px;\n"
+"	border: 1px solid #838383;\n"
+"	border-radius: 2px;\n"
+"}\n"
+"\n"
+"#info_frame QLineEdit:focus,\n"
+"#info_frame QComboBox:focus\n"
+" {\n"
+"	border-color: #0055ff;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down { \n"
+"	background: transparent; \n"
+"	border: none;\n"
+"	margin-right: 5px;\n"
+"} \n"
+"\n"
+"QComboBox::down-arrow {\n"
+"	image: url(:/icons/icons/expand_more.svg);\n"
+"}\n"
+"\n"
+"#info_frame QPushButton {\n"
+"	font-size: 14px;\n"
+"	padding: 5px 10px;\n"
+"	border: 2px solid #f0f0f0;\n"
+"	border-radius: 5px;\n"
+"	background-color: #84e8f7;\n"
+"}\n"
+"\n"
+"#info_frame QPushButton:hover {\n"
+"	border-color: #4c96f7;\n"
+"	font-size: 15px;\n"
+"}\n"
+"#result_frame {\n"
+"	border-radius: 5px;\n"
+"	background-color: #fff;\n"
+"}\n"
+"QTableWidget::Item{\n"
+"	border-bottom:1px solid #d0c6ff;\n"
+"	color: black;\n"
+"	padding-left: 3px;\n"
+"}")
+        self.horizontalLayout_6 = QHBoxLayout(self.Page_attendance)
         self.horizontalLayout_6.setSpacing(0)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.Page.addWidget(self.Page_plotData)
+        self.widget = QWidget(self.Page_attendance)
+        self.widget.setObjectName(u"widget")
+        self.verticalLayout_7 = QVBoxLayout(self.widget)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.menu_attendance = QWidget(self.widget)
+        self.menu_attendance.setObjectName(u"menu_attendance")
+        self.horizontalLayout_5 = QHBoxLayout(self.menu_attendance)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.label_28 = QLabel(self.menu_attendance)
+        self.label_28.setObjectName(u"label_28")
+        self.label_28.setEnabled(True)
+        self.label_28.setMinimumSize(QSize(0, 70))
+        self.label_28.setMaximumSize(QSize(16777215, 100))
+        self.label_28.setBaseSize(QSize(0, 70))
+        font12 = QFont()
+        font12.setFamilies([u"Roboto"])
+        font12.setBold(True)
+        self.label_28.setFont(font12)
+        self.label_28.setStyleSheet(u"margin-left: 20px;\n"
+"border: 1px solid gray;\n"
+"border-radius: 25px;\n"
+"padding: 3px;\n"
+"background-color: #f9f9f9;\n"
+"font-size: 40px;\n"
+"")
+        self.label_28.setFrameShape(QFrame.StyledPanel)
+        self.label_28.setFrameShadow(QFrame.Sunken)
+        self.label_28.setMidLineWidth(5)
+        self.label_28.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_5.addWidget(self.label_28)
+
+
+        self.verticalLayout_7.addWidget(self.menu_attendance)
+
+        self.info_frame = QFrame(self.widget)
+        self.info_frame.setObjectName(u"info_frame")
+        self.info_frame.setMaximumSize(QSize(16777215, 200))
+        font13 = QFont()
+        font13.setFamilies([u"Roboto"])
+        font13.setPointSize(16)
+        font13.setBold(False)
+        self.info_frame.setFont(font13)
+        self.gridLayout_9 = QGridLayout(self.info_frame)
+        self.gridLayout_9.setObjectName(u"gridLayout_9")
+        self.gridLayout_9.setHorizontalSpacing(20)
+        self.gridLayout_9.setVerticalSpacing(10)
+        self.gridLayout_9.setContentsMargins(30, 20, 30, 20)
+        self.gridLayout_11 = QGridLayout()
+        self.gridLayout_11.setObjectName(u"gridLayout_11")
+        self.gridLayout_11.setHorizontalSpacing(10)
+        self.gridLayout_11.setVerticalSpacing(20)
+        self.label = QLabel(self.info_frame)
+        self.label.setObjectName(u"label")
+        self.label.setMaximumSize(QSize(16777215, 50))
+        self.label.setFont(font)
+
+        self.gridLayout_11.addWidget(self.label, 0, 0, 1, 1)
+
+        self.label_3 = QLabel(self.info_frame)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_11.addWidget(self.label_3, 1, 0, 1, 1)
+
+        self.lineEdit_2 = QLineEdit(self.info_frame)
+        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
+        self.lineEdit_2.setSizePolicy(sizePolicy3)
+        self.lineEdit_2.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_11.addWidget(self.lineEdit_2, 1, 1, 1, 1)
+
+        self.lineEdit = QLineEdit(self.info_frame)
+        self.lineEdit.setObjectName(u"lineEdit")
+        sizePolicy3.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy3)
+        self.lineEdit.setMaximumSize(QSize(16777215, 50))
+        self.lineEdit.setInputMethodHints(Qt.ImhDigitsOnly)
+
+        self.gridLayout_11.addWidget(self.lineEdit, 0, 1, 1, 1)
+
+
+        self.gridLayout_9.addLayout(self.gridLayout_11, 0, 0, 1, 1)
+
+        self.search_btn = QPushButton(self.info_frame)
+        self.search_btn.setObjectName(u"search_btn")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Maximum, QSizePolicy.Policy.Maximum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.search_btn.sizePolicy().hasHeightForWidth())
+        self.search_btn.setSizePolicy(sizePolicy4)
+        self.search_btn.setMaximumSize(QSize(50, 50))
+        icon1 = QIcon()
+        icon1.addFile(u"../QtPy_examples/PyQt5-Video-Book/#017_Students information system/icons/search.svg", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.search_btn.setIcon(icon1)
+        self.search_btn.setIconSize(QSize(20, 20))
+
+        self.gridLayout_9.addWidget(self.search_btn, 0, 2, 1, 1)
+
+        self.gridLayout_10 = QGridLayout()
+        self.gridLayout_10.setObjectName(u"gridLayout_10")
+        self.gridLayout_10.setHorizontalSpacing(10)
+        self.gridLayout_10.setVerticalSpacing(20)
+        self.label_6 = QLabel(self.info_frame)
+        self.label_6.setObjectName(u"label_6")
+        self.label_6.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_10.addWidget(self.label_6, 1, 0, 1, 1)
+
+        self.label_5 = QLabel(self.info_frame)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setMaximumSize(QSize(16777215, 50))
+        font14 = QFont()
+        font14.setFamilies([u"Roboto"])
+        font14.setBold(False)
+        self.label_5.setFont(font14)
+
+        self.gridLayout_10.addWidget(self.label_5, 0, 0, 1, 1)
+
+        self.lineEdit_3 = QLineEdit(self.info_frame)
+        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        sizePolicy3.setHeightForWidth(self.lineEdit_3.sizePolicy().hasHeightForWidth())
+        self.lineEdit_3.setSizePolicy(sizePolicy3)
+        self.lineEdit_3.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_10.addWidget(self.lineEdit_3, 0, 1, 1, 1)
+
+        self.lineEdit_4 = QLineEdit(self.info_frame)
+        self.lineEdit_4.setObjectName(u"lineEdit_4")
+        sizePolicy3.setHeightForWidth(self.lineEdit_4.sizePolicy().hasHeightForWidth())
+        self.lineEdit_4.setSizePolicy(sizePolicy3)
+        self.lineEdit_4.setMaximumSize(QSize(16777215, 50))
+
+        self.gridLayout_10.addWidget(self.lineEdit_4, 1, 1, 1, 1)
+
+
+        self.gridLayout_9.addLayout(self.gridLayout_10, 0, 1, 1, 1)
+
+
+        self.verticalLayout_7.addWidget(self.info_frame)
+
+        self.verticalSpacer = QSpacerItem(20, 30, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+
+        self.verticalLayout_7.addItem(self.verticalSpacer)
+
+        self.result_frame = QFrame(self.widget)
+        self.result_frame.setObjectName(u"result_frame")
+        self.result_frame.setMaximumSize(QSize(16777215, 625))
+        self.gridLayout_8 = QGridLayout(self.result_frame)
+        self.gridLayout_8.setObjectName(u"gridLayout_8")
+        self.table_attendance = QTableWidget(self.result_frame)
+        if (self.table_attendance.columnCount() < 5):
+            self.table_attendance.setColumnCount(5)
+        font15 = QFont()
+        font15.setFamilies([u"DejaVu Sans"])
+        font15.setPointSize(12)
+        font15.setBold(True)
+        __qtablewidgetitem = QTableWidgetItem()
+        __qtablewidgetitem.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter);
+        __qtablewidgetitem.setFont(font15);
+        self.table_attendance.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        __qtablewidgetitem1.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter);
+        __qtablewidgetitem1.setFont(font15);
+        self.table_attendance.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        __qtablewidgetitem2.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter);
+        __qtablewidgetitem2.setFont(font15);
+        self.table_attendance.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        __qtablewidgetitem3.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter);
+        __qtablewidgetitem3.setFont(font15);
+        self.table_attendance.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        __qtablewidgetitem4.setTextAlignment(Qt.AlignLeading|Qt.AlignVCenter);
+        __qtablewidgetitem4.setFont(font15);
+        self.table_attendance.setHorizontalHeaderItem(4, __qtablewidgetitem4)
+        self.table_attendance.setObjectName(u"table_attendance")
+        font16 = QFont()
+        font16.setFamilies([u"Roboto"])
+        font16.setPointSize(10)
+        self.table_attendance.setFont(font16)
+        self.table_attendance.setFocusPolicy(Qt.NoFocus)
+        self.table_attendance.setStyleSheet(u"")
+        self.table_attendance.setFrameShape(QFrame.NoFrame)
+        self.table_attendance.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.table_attendance.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.table_attendance.setShowGrid(False)
+        self.table_attendance.setGridStyle(Qt.NoPen)
+        self.table_attendance.setSortingEnabled(True)
+        self.table_attendance.setWordWrap(True)
+        self.table_attendance.setCornerButtonEnabled(False)
+        self.table_attendance.setRowCount(0)
+        self.table_attendance.horizontalHeader().setCascadingSectionResizes(False)
+        self.table_attendance.horizontalHeader().setMinimumSectionSize(50)
+        self.table_attendance.horizontalHeader().setDefaultSectionSize(120)
+        self.table_attendance.horizontalHeader().setHighlightSections(True)
+        self.table_attendance.horizontalHeader().setStretchLastSection(True)
+        self.table_attendance.verticalHeader().setVisible(False)
+        self.table_attendance.verticalHeader().setCascadingSectionResizes(False)
+        self.table_attendance.verticalHeader().setDefaultSectionSize(28)
+        self.table_attendance.verticalHeader().setHighlightSections(False)
+        self.table_attendance.verticalHeader().setProperty(u"showSortIndicator", True)
+        self.table_attendance.verticalHeader().setStretchLastSection(False)
+
+        self.gridLayout_8.addWidget(self.table_attendance, 0, 0, 1, 1)
+
+
+        self.verticalLayout_7.addWidget(self.result_frame)
+
+
+        self.horizontalLayout_6.addWidget(self.widget)
+
+        self.Page.addWidget(self.Page_attendance)
         self.Page_Camera = QWidget()
         self.Page_Camera.setObjectName(u"Page_Camera")
         self.Page_Camera.setStyleSheet(u"*{\n"
@@ -872,16 +1146,16 @@ class Ui_MainWindow(object):
 "}")
         self.gridLayout_7 = QGridLayout(self.Page_Camera)
         self.gridLayout_7.setObjectName(u"gridLayout_7")
-        self.Menu_camera = QFrame(self.Page_Camera)
-        self.Menu_camera.setObjectName(u"Menu_camera")
-        self.Menu_camera.setMinimumSize(QSize(0, 120))
-        self.Menu_camera.setMaximumSize(QSize(16777215, 120))
-        self.Menu_camera.setStyleSheet(u"")
-        self.Menu_camera.setFrameShape(QFrame.NoFrame)
-        self.Menu_camera.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_4 = QHBoxLayout(self.Menu_camera)
+        self.menu_camera = QFrame(self.Page_Camera)
+        self.menu_camera.setObjectName(u"menu_camera")
+        self.menu_camera.setMinimumSize(QSize(0, 120))
+        self.menu_camera.setMaximumSize(QSize(16777215, 120))
+        self.menu_camera.setStyleSheet(u"")
+        self.menu_camera.setFrameShape(QFrame.NoFrame)
+        self.menu_camera.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.menu_camera)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.label_27 = QLabel(self.Menu_camera)
+        self.label_27 = QLabel(self.menu_camera)
         self.label_27.setObjectName(u"label_27")
         self.label_27.setMinimumSize(QSize(0, 70))
         self.label_27.setMaximumSize(QSize(16777215, 70))
@@ -900,7 +1174,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.label_27)
 
 
-        self.gridLayout_7.addWidget(self.Menu_camera, 0, 0, 1, 1)
+        self.gridLayout_7.addWidget(self.menu_camera, 0, 0, 1, 1)
 
         self.camera = QVBoxLayout()
         self.camera.setObjectName(u"camera")
@@ -926,8 +1200,7 @@ class Ui_MainWindow(object):
         QWidget.setTabOrder(self.Signup_password, self.Signup_code)
         QWidget.setTabOrder(self.Signup_code, self.Signup_btn_signup)
         QWidget.setTabOrder(self.Signup_btn_signup, self.Main_btn_tracking)
-        QWidget.setTabOrder(self.Main_btn_tracking, self.Main_btn_camera)
-        QWidget.setTabOrder(self.Main_btn_camera, self.Signin_password)
+        QWidget.setTabOrder(self.Main_btn_tracking, self.Signin_password)
         QWidget.setTabOrder(self.Signin_password, self.Signin_btn_login)
         QWidget.setTabOrder(self.Signin_btn_login, self.Signin_btn_signin)
         QWidget.setTabOrder(self.Signin_btn_signin, self.Signin_btn_signup)
@@ -935,11 +1208,12 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.Dashboard.setCurrentIndex(0)
+        self.Dashboard.setCurrentIndex(1)
+        self.Main_btn_attendance.setDefault(True)
         self.Main_btn_camera.setDefault(True)
         self.Main_btn_tracking.setDefault(True)
         self.Account__btnlogout.setDefault(True)
-        self.Page.setCurrentIndex(4)
+        self.Page.setCurrentIndex(5)
         self.Signin_btn_login.setDefault(True)
         self.Signup_btn_signup.setDefault(True)
 
@@ -958,6 +1232,7 @@ class Ui_MainWindow(object):
         self.Logo_BK_2.setText("")
         self.Logo_fab_2.setText("")
         self.Label_admin.setText(QCoreApplication.translate("MainWindow", u"ADMIN", None))
+        self.Main_btn_attendance.setText(QCoreApplication.translate("MainWindow", u"ATTENDANCE", None))
         self.Main_btn_camera.setText(QCoreApplication.translate("MainWindow", u"CAMERA", None))
         self.Main_btn_tracking.setText(QCoreApplication.translate("MainWindow", u"TRACKING", None))
         self.Account_username.setText(QCoreApplication.translate("MainWindow", u"USERNAME", None))
@@ -983,6 +1258,22 @@ class Ui_MainWindow(object):
         self.Signup_btn_signup.setText(QCoreApplication.translate("MainWindow", u"Create Account", None))
         self.label_26.setText(QCoreApplication.translate("MainWindow", u"TRACKING", None))
         self.traking_label.setText("")
+        self.label_28.setText(QCoreApplication.translate("MainWindow", u"ATTENDANCE", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Employee ID", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Name", None))
+        self.search_btn.setText("")
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Email Address", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Department", None))
+        ___qtablewidgetitem = self.table_attendance.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"Employee ID", None));
+        ___qtablewidgetitem1 = self.table_attendance.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Name", None));
+        ___qtablewidgetitem2 = self.table_attendance.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Department", None));
+        ___qtablewidgetitem3 = self.table_attendance.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"Status", None));
+        ___qtablewidgetitem4 = self.table_attendance.horizontalHeaderItem(4)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Email Address", None));
         self.label_27.setText(QCoreApplication.translate("MainWindow", u"CAMERA", None))
         self.camera_label.setText("")
     # retranslateUi
