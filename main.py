@@ -6,6 +6,7 @@ from PySide6.QtCore import QTimer
 
 from robot_ui import Ui_MainWindow
 # pyside6-uic Robot_UI.ui -o robot_ui.py
+# hello
 
 from jetson.camera_publisher import CameraPublisherThread
 from camera_subcriber import CameraSubscriberThread
