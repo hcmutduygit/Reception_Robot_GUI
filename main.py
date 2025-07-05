@@ -2,6 +2,7 @@ import sys, rclpy
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QPixmap
+from PySide6.QtCore import QTimer
 
 from robot_ui import Ui_MainWindow
 # pyside6-uic Robot_UI.ui -o robot_ui.py
@@ -28,12 +29,16 @@ class MainWindow(QMainWindow):
         "verify": "fablab"
     }
 ]
+        
+        # phan tram pin 
+        battery_percent = 82 
+        self.ui.label_battery.setText(f"{battery_percent}%")
+
         # khoi tao camera
         self.camera_pub_thread = None
         self.camera_sub_thread = None
 
         # khoi tao tab diem danh
-
         self.attendance_tab = AttendanceTab(self.ui)
 
         # set moi vô thi hien cai nao 
@@ -45,7 +50,7 @@ class MainWindow(QMainWindow):
         self.ui.Signin_btn_signin.clicked.connect(lambda: self.ui.Page.setCurrentWidget(self.ui.Page_signin))
         self.ui.Signin_btn_login.clicked.connect(self.handle_login)
         self.ui.Signup_btn_signup.clicked.connect(self.handle_signup)
-
+    
         # click sang tab khac thi chuyen trang 
         self.ui.Main_btn_camera.clicked.connect(lambda: self.switch_to_page(self.ui.Page_Camera))
         self.ui.Main_btn_tracking.clicked.connect(lambda: self.switch_to_page(self.ui.Page_tracking))

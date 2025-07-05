@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import QWidget, QTableWidgetItem, QHeaderView
-from PySide6.QtGui import QFont
+from PySide6.QtGui import QFont, QBrush, QColor
 
 
 class AttendanceTab(QWidget):
@@ -20,6 +20,7 @@ class AttendanceTab(QWidget):
         header.resizeSection(3, 200)  # Cột 3: Status
         header.resizeSection(4, 240)  # Cột 4: email
 
+        self.ui.table_attendance.horizontalHeader().setFixedHeight(40)
         self.ui.table_attendance.verticalHeader().setDefaultSectionSize(40)
         self.ui.table_attendance.setColumnCount(5)
         self.ui.table_attendance.setHorizontalHeaderLabels([
@@ -45,8 +46,19 @@ class AttendanceTab(QWidget):
             self.ui.table_attendance.setItem(row, 0, QTableWidgetItem(entry["id"]))
             self.ui.table_attendance.setItem(row, 1, QTableWidgetItem(entry["name"]))
             self.ui.table_attendance.setItem(row, 2, QTableWidgetItem(entry["dept"]))
-            self.ui.table_attendance.setItem(row, 3, QTableWidgetItem(entry["status"]))
             self.ui.table_attendance.setItem(row, 4, QTableWidgetItem(entry["email"]))
+        
+            # Ô trạng thái (có phân biệt màu)
+            status_item = QTableWidgetItem(entry["status"])
+
+            if entry["status"].lower() == "present":
+                status_item.setBackground(QBrush(QColor("#d0f5d6")))  # nền xanh nhạt
+                status_item.setForeground(QBrush(QColor("#008000")))  # chữ xanh đậm
+            else:
+                status_item.setBackground(QBrush(QColor("#ffd6d6")))  # nền đỏ nhạt
+                status_item.setForeground(QBrush(QColor("#cc0000")))  # chữ đỏ đậm
+
+            self.ui.table_attendance.setItem(row, 3, status_item)  # cột status
 
     def search_attendance(self):
         id_text = self.ui.lineEdit.text().strip().lower()
